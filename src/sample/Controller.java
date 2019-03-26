@@ -24,7 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Scanner;
-import static sample.Main.*;
+
+import static sample.Main.prop;
 
 public class Controller implements Initializable {
 
@@ -98,7 +99,9 @@ public class Controller implements Initializable {
         String delete = sb.toString();
         observableList.remove(delete);
         data.remove(delete);
-        Files.delete(Paths.get(prop.get("absolutePath") + rowToDelete.getPhotoName()));
+        if (!rowToDelete.getPhotoName().equals("0.jpg")) {
+            Files.delete(Paths.get(prop.get("absolutePath") + rowToDelete.getPhotoName()));
+        }
         updateFile();
         myTable.getItems().removeAll(myTable.getSelectionModel().getSelectedItem());
     }
@@ -127,22 +130,22 @@ public class Controller implements Initializable {
         myTable.itemsProperty().setValue(observableList);
 
         id.setCellValueFactory(
-                new PropertyValueFactory<Osoba, String>("ajdi")
+                new PropertyValueFactory<>("ajdi")
         );
         firstName.setCellValueFactory(
-                new PropertyValueFactory<Osoba, String>("imie")
+                new PropertyValueFactory<>("imie")
         );
         lastName.setCellValueFactory(
-                new PropertyValueFactory<Osoba, String>("nazwisko")
+                new PropertyValueFactory<>("nazwisko")
         );
         pesel.setCellValueFactory(
-                new PropertyValueFactory<Osoba, String>("ppesel")
+                new PropertyValueFactory<>("ppesel")
         );
         pesel1.setCellValueFactory(
-                new PropertyValueFactory<Osoba, String>("data")
+                new PropertyValueFactory<>("data")
         );
         photo.setCellValueFactory(
-                new PropertyValueFactory<Osoba, String>("photoname")
+                new PropertyValueFactory<>("photoname")
         );
         setImage();
     }
@@ -154,11 +157,11 @@ public class Controller implements Initializable {
         File file;
         if (zaznaczonaOsoba != null) {
             File grafika = new File("grafika");
-            file = new File(grafika.getAbsolutePath().substring(0, grafika.getAbsolutePath().length() - 8) + "/src/sample/grafika/" + zaznaczonaOsoba.getPhotoName());
+            file = new File(grafika.getAbsolutePath().substring(0, grafika.getAbsolutePath().length() - 8) + prop.getProperty("relativePath") + zaznaczonaOsoba.getPhotoName());
             s = file.toURI().toString();
         } else {
             File jpg = new File("0.jpg");
-            file = new File(jpg.getAbsolutePath().substring(0, jpg.getAbsolutePath().length() - 6) + "/src/sample/grafika/0.jpg");
+            file = new File(jpg.getAbsolutePath().substring(0, jpg.getAbsolutePath().length() - 6) + prop.getProperty("relativePath") + "0.jpg");
             s = file.toURI().toString();
         }
         image = new Image(s, true);

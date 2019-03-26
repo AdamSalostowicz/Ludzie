@@ -1,12 +1,12 @@
 package sample;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,12 +18,12 @@ import java.util.Scanner;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static sample.Controller.observableList;
+import static sample.Main.prop;
 
 public class AddPerson {
 
     private String data = "";
     private String nameOfPhoto = "";
-    private int maxValue;
 
     @FXML
     private TextField wprowadzImie;
@@ -53,10 +53,7 @@ public class AddPerson {
                     Integer.valueOf(String.valueOf(pesel[7])) +
                     9 * Integer.valueOf(String.valueOf(pesel[8])) +
                     7 * Integer.valueOf(String.valueOf(pesel[9]));
-            if (control % 10 == Integer.valueOf(String.valueOf(pesel[10])))
-                return true;
-            else
-                return false;
+            return control % 10 == Integer.valueOf(String.valueOf(pesel[10]));
         } else
             return false;
     }
@@ -70,10 +67,13 @@ public class AddPerson {
         String pesel = wprowadzPesel.getText();
 
 
-        if (firstName.isBlank() != true && lastName.isBlank() != true && pesel.isBlank() != true && isPeselCorrect(pesel)) {
+        if (!firstName.isBlank() && !lastName.isBlank() && !pesel.isBlank() && isPeselCorrect(pesel)) {
             birthsdayDate(pesel);
             firstName = bigFirstLetter(firstName);
             lastName = bigFirstLetter(lastName);
+            if (nameOfPhoto.equals("")) {
+                nameOfPhoto = "0.jpg";
+            }
             s = getId() + ";" + firstName + ";" + lastName + ";" + wprowadzPesel.getText() + ";" + data + ";" + nameOfPhoto;
             observableList.add(new Osoba(getId(), firstName, lastName, wprowadzPesel.getText(), data, nameOfPhoto));
             FileWriter fw = new FileWriter("osoby.csv", true);
@@ -125,25 +125,32 @@ public class AddPerson {
     }
 
     @FXML
-    public String getPhotoName(ActionEvent event) throws IOException {
-
-        Path source;
-        Path target;
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Otwórz plik");
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.jpeg")
-        );
-        File file = fileChooser.showOpenDialog(new Stage());
-        nameOfPhoto = getId() + ".jpg";
-        source = Paths.get(file.getPath());
-        File dir = new File("grafika");
-        target = Paths.get(dir.getAbsolutePath().substring(0, dir.getAbsolutePath().length() - 7) + "/src/sample/grafika/" + nameOfPhoto);
-        Files.copy(source, target, REPLACE_EXISTING);
-        return nameOfPhoto;
+    public String getPhotoName() throws IOException {
+        try {
+            Path source;
+            Path target;
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Otwórz plik");
+            fileChooser.getExtensionFilters().add(
+                    new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.jpeg")
+            );
+            File file = fileChooser.showOpenDialog(new Stage());
+            if (file != null) {
+                nameOfPhoto = getId() + ".jpg";
+            } else {
+                nameOfPhoto = "0.jpg";
+            }
+            source = Paths.get(file.getPath());
+            File dir = new File("grafika");
+            target = Paths.get(dir.getAbsolutePath().substring(0, dir.getAbsolutePath().length() - 7) + prop.getProperty("relativePath") + nameOfPhoto);
+            Files.copy(source, target, REPLACE_EXISTING);
+            return nameOfPhoto;
+        } catch (NullPointerException exc) {
+            return null;
+        }
     }
 
-    public String getId() throws FileNotFoundException {
+    private String getId() throws FileNotFoundException {
         FileReader fileReader = new FileReader("osoby.csv");
         Scanner scanner = new Scanner(fileReader);
         String string = "";
@@ -158,7 +165,7 @@ public class AddPerson {
                     }
                 }
             }
-            if (string.equals("") == false) {
+            if (!string.equals("")) {
                 integerList.add(Integer.valueOf(string));
             }
             string = "";
