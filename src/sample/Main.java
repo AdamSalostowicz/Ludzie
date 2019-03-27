@@ -9,11 +9,12 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
+
 public class Main extends Application {
 
-    static String projectsName;
-    static FileInputStream in;
+    private static FileInputStream in;
     static Properties prop;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         prop = new Properties();
@@ -34,6 +35,6 @@ public class Main extends Application {
 
     private String setPath(File file) {
         File f = new File(String.valueOf(file));
-        return f.getAbsolutePath().substring(0,f.getAbsolutePath().length() - 16) + "/src/sample/conf.properties";
+        return f.getAbsolutePath().substring(0, f.getAbsolutePath().length() - 16) + "/src/sample/conf.properties";
     }
 }

@@ -35,12 +35,31 @@ public class AddPerson {
     private TextArea warning;
 
     static String bigFirstLetter(String z) {
-        return Character.toUpperCase(z.charAt(0)) + z.substring(1).toLowerCase();
+        String delimeter = "";
+        String zZ = "";
+        if (z.contains(" ")) {
+            delimeter = " ";
+        }
+        if (z.contains("-")) {
+            delimeter = "-";
+        }
+        if (!delimeter.equals("")) {
+            String[] delimetrZ = z.split(delimeter);
+            for (String part : delimetrZ
+            ) {
+                zZ += Character.toUpperCase(part.charAt(0)) + part.substring(1).toLowerCase() + delimeter;
+                System.out.println(zZ);
+            }
+            zZ = zZ.substring(0, zZ.length() - 1);
+        } else {
+            zZ = z;
+        }
+        return zZ;
     }
 
     static boolean isPeselCorrect(String z) {
         int control = 0;
-        char[] pesel = new char[11];
+        char[] pesel;
         if (z.length() == 11) {
             pesel = z.toCharArray();
             control = 9 * Integer.valueOf(String.valueOf(pesel[0])) +
