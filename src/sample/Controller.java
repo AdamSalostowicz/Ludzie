@@ -30,7 +30,7 @@ import static sample.Main.prop;
 public class Controller implements Initializable {
 
     static List<String> data = new ArrayList<>();
-    static List<String> zaznaczonaOsoba = new ArrayList<>();
+    static List<String> markedPerson = new ArrayList<>();
     static ObservableList<Osoba> observableList = null;
     static String s = "";
     private Image image;
@@ -77,13 +77,13 @@ public class Controller implements Initializable {
     @FXML
     public void edit() throws IOException {
         rowToDelete = myTable.getSelectionModel().getSelectedItem();
-        zaznaczonaOsoba.clear();
-        zaznaczonaOsoba.add(rowToDelete.getId());
-        zaznaczonaOsoba.add(rowToDelete.getImie());
-        zaznaczonaOsoba.add(rowToDelete.getNazwisko());
-        zaznaczonaOsoba.add(rowToDelete.getPpesel());
-        zaznaczonaOsoba.add(rowToDelete.getData());
-        zaznaczonaOsoba.add(rowToDelete.getPhotoName());
+        markedPerson.clear();
+        markedPerson.add(rowToDelete.getId());
+        markedPerson.add(rowToDelete.getImie());
+        markedPerson.add(rowToDelete.getNazwisko());
+        markedPerson.add(rowToDelete.getPpesel());
+        markedPerson.add(rowToDelete.getData());
+        markedPerson.add(rowToDelete.getPhotoName());
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("edit.fxml"));
         stage.setTitle("Edycja");
@@ -153,15 +153,13 @@ public class Controller implements Initializable {
     @FXML
     public void setImage() {
 
-        Osoba zaznaczonaOsoba = myTable.getSelectionModel().getSelectedItem();
+        Osoba markedPerson = myTable.getSelectionModel().getSelectedItem();
         File file;
-        if (zaznaczonaOsoba != null) {
-            File grafika = new File("grafika");
-            file = new File(grafika.getAbsolutePath().substring(0, grafika.getAbsolutePath().length() - 8) + prop.getProperty("relativePath") + zaznaczonaOsoba.getPhotoName());
+        if (markedPerson != null) {
+            file = new File(prop.getProperty("absolutePath") + markedPerson.getPhotoName());
             s = file.toURI().toString();
         } else {
-            File jpg = new File("0.jpg");
-            file = new File(jpg.getAbsolutePath().substring(0, jpg.getAbsolutePath().length() - 6) + prop.getProperty("relativePath") + "0.jpg");
+            file = new File(prop.getProperty("absolutePath") + "0.jpg");
             s = file.toURI().toString();
         }
         image = new Image(s, true);

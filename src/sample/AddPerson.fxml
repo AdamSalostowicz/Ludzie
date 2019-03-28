@@ -23,10 +23,10 @@
     <padding>
         <Insets bottom="10" left="10" right="10" top="10"/>
     </padding>
-    <TextField fx:id="wprowadzImie" promptText="Wprowadz Imię" GridPane.rowIndex="1"/>
-    <TextField fx:id="wprowadzNazwisko" promptText="Wprowadź nazwisko" GridPane.rowIndex="3"/>
-    <TextField fx:id="wprowadzPesel" promptText="Wprowadź numer PESEL" GridPane.rowIndex="5"/>
-    <Button fx:id="dodaj" mnemonicParsing="false" onAction="#dodaj" prefWidth="80" text="Dodaj"
+    <TextField fx:id="enterFirstName" promptText="Wprowadź Imię" GridPane.rowIndex="1"/>
+    <TextField fx:id="enterSurname" promptText="Wprowadź nazwisko" GridPane.rowIndex="3"/>
+    <TextField fx:id="enterPesel" promptText="Wprowadź numer PESEL" GridPane.rowIndex="5"/>
+    <Button fx:id="dodaj" mnemonicParsing="false" onAction="#add" prefWidth="80" text="Dodaj"
             GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
     <Button fx:id="clear" mnemonicParsing="false" onAction="#clear" prefWidth="80" text="Wyczyść"
             GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>

@@ -30,9 +30,9 @@ public class Edit implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        textField1.setText(zaznaczonaOsoba.get(1));
-        textField2.setText(zaznaczonaOsoba.get(2));
-        textField3.setText(zaznaczonaOsoba.get(3));
+        textField1.setText(markedPerson.get(1));
+        textField2.setText(markedPerson.get(2));
+        textField3.setText(markedPerson.get(3));
     }
 
     @FXML
@@ -45,29 +45,29 @@ public class Edit implements Initializable {
         lastName = bigFirstLetter(lastName);
 
         if (isPeselCorrect(pesel)) {
-            zaznaczonaOsoba.set(1, firstName);
-            zaznaczonaOsoba.set(2, lastName);
-            zaznaczonaOsoba.set(3, pesel);
+            markedPerson.set(1, firstName);
+            markedPerson.set(2, lastName);
+            markedPerson.set(3, pesel);
         }
-        for (int i = 0; i < zaznaczonaOsoba.size(); i++) {
-            if (i != zaznaczonaOsoba.size() - 1) {
-                s += zaznaczonaOsoba.get(i) + ";";
+        for (int i = 0; i < markedPerson.size(); i++) {
+            if (i != markedPerson.size() - 1) {
+                s += markedPerson.get(i) + ";";
             } else {
-                s += zaznaczonaOsoba.get(i);
+                s += markedPerson.get(i);
             }
         }
         for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).startsWith(zaznaczonaOsoba.get(0))) {
+            if (data.get(i).startsWith(markedPerson.get(0))) {
                 data.remove(i);
             }
         }
         data.add(s);
         for (int i = 0; i < observableList.size(); i++) {
-            if (observableList.get(i).getId().equals(zaznaczonaOsoba.get(0))) {
+            if (observableList.get(i).getId().equals(markedPerson.get(0))) {
                 observableList.remove(i);
             }
         }
-        observableList.add(new Osoba(zaznaczonaOsoba.get(0), zaznaczonaOsoba.get(1), zaznaczonaOsoba.get(2), zaznaczonaOsoba.get(3), zaznaczonaOsoba.get(4), zaznaczonaOsoba.get(5)));
+        observableList.add(new Osoba(markedPerson.get(0), markedPerson.get(1), markedPerson.get(2), markedPerson.get(3), markedPerson.get(4), markedPerson.get(5)));
         updateFile();
         Stage stage = (Stage) button.getScene().getWindow();
         stage.close();

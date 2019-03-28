@@ -26,11 +26,11 @@ public class AddPerson {
     private String nameOfPhoto = "";
 
     @FXML
-    private TextField wprowadzImie;
+    private TextField enterFirstName;
     @FXML
-    private TextField wprowadzNazwisko;
+    private TextField enterSurname;
     @FXML
-    private TextField wprowadzPesel;
+    private TextField enterPesel;
     @FXML
     private TextArea warning;
 
@@ -52,7 +52,7 @@ public class AddPerson {
             }
             zZ = zZ.substring(0, zZ.length() - 1);
         } else {
-            zZ = z;
+            zZ = Character.toUpperCase(z.charAt(0)) + z.substring(1).toLowerCase();
         }
         return zZ;
     }
@@ -78,12 +78,12 @@ public class AddPerson {
     }
 
     @FXML
-    public void dodaj() throws IOException {
+    public void add() throws IOException {
         FXMLLoader.load(getClass().getResource("AddPerson.fxml"));
         String s = "";
-        String firstName = wprowadzImie.getText();
-        String lastName = wprowadzNazwisko.getText();
-        String pesel = wprowadzPesel.getText();
+        String firstName = enterFirstName.getText();
+        String lastName = enterSurname.getText();
+        String pesel = enterPesel.getText();
 
 
         if (!firstName.isBlank() && !lastName.isBlank() && !pesel.isBlank() && isPeselCorrect(pesel)) {
@@ -93,8 +93,8 @@ public class AddPerson {
             if (nameOfPhoto.equals("")) {
                 nameOfPhoto = "0.jpg";
             }
-            s = getId() + ";" + firstName + ";" + lastName + ";" + wprowadzPesel.getText() + ";" + data + ";" + nameOfPhoto;
-            observableList.add(new Osoba(getId(), firstName, lastName, wprowadzPesel.getText(), data, nameOfPhoto));
+            s = getId() + ";" + firstName + ";" + lastName + ";" + enterPesel.getText() + ";" + data + ";" + nameOfPhoto;
+            observableList.add(new Osoba(getId(), firstName, lastName, enterPesel.getText(), data, nameOfPhoto));
             FileWriter fw = new FileWriter("osoby.csv", true);
             fw.write(s);
             fw.append('\n');
@@ -110,14 +110,14 @@ public class AddPerson {
     @FXML
     public void clear() throws IOException {
         FXMLLoader.load(getClass().getResource("AddPerson.fxml"));
-        wprowadzImie.clear();
-        wprowadzNazwisko.clear();
-        wprowadzPesel.clear();
+        enterFirstName.clear();
+        enterSurname.clear();
+        enterPesel.clear();
     }
 
     public void birthsdayDate(String pesel) {
         StringBuilder sb = new StringBuilder();
-        pesel = wprowadzPesel.getText();
+        pesel = enterPesel.getText();
         System.out.println(pesel);
         if (pesel.charAt(2) == '0' || pesel.charAt(2) == '1') {
             sb.append(19 + pesel.substring(0, 2));
@@ -160,8 +160,7 @@ public class AddPerson {
                 nameOfPhoto = "0.jpg";
             }
             source = Paths.get(file.getPath());
-            File dir = new File("grafika");
-            target = Paths.get(dir.getAbsolutePath().substring(0, dir.getAbsolutePath().length() - 7) + prop.getProperty("relativePath") + nameOfPhoto);
+            target = Paths.get(prop.getProperty("absolutePath") + nameOfPhoto);
             Files.copy(source, target, REPLACE_EXISTING);
             return nameOfPhoto;
         } catch (NullPointerException exc) {
