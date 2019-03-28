@@ -85,9 +85,10 @@ public class AddPerson {
         String lastName = enterSurname.getText();
         String pesel = enterPesel.getText();
 
-
         if (!firstName.isBlank() && !lastName.isBlank() && !pesel.isBlank() && isPeselCorrect(pesel)) {
             birthsdayDate(pesel);
+            firstName = firstName.replace(";", "");
+            lastName = lastName.replace(";", "");
             firstName = bigFirstLetter(firstName);
             lastName = bigFirstLetter(lastName);
             if (nameOfPhoto.equals("")) {
