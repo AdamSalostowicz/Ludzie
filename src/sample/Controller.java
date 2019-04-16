@@ -70,7 +70,7 @@ public class Controller implements Initializable {
         Parent root = FXMLLoader.load(getClass().getResource("AddPerson.fxml"));
         Stage stage = new Stage();
         stage.setTitle("Dodawanie nowej osoby");
-        stage.setScene(new Scene(root, 600, 200));
+        stage.setScene(new Scene(root, 660, 200));
         stage.show();
     }
 
@@ -78,32 +78,43 @@ public class Controller implements Initializable {
     public void edit() throws IOException {
         rowToDelete = myTable.getSelectionModel().getSelectedItem();
         markedPerson.clear();
-        markedPerson.add(rowToDelete.getId());
-        markedPerson.add(rowToDelete.getImie());
-        markedPerson.add(rowToDelete.getNazwisko());
-        markedPerson.add(rowToDelete.getPpesel());
-        markedPerson.add(rowToDelete.getData());
-        markedPerson.add(rowToDelete.getPhotoName());
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("edit.fxml"));
-        stage.setTitle("Edycja");
-        stage.setScene(new Scene(root, 600, 200));
-        stage.show();
+        if (rowToDelete != null) {
+            markedPerson.add(rowToDelete.getId());
+            markedPerson.add(rowToDelete.getImie());
+            markedPerson.add(rowToDelete.getNazwisko());
+            markedPerson.add(rowToDelete.getPpesel());
+            markedPerson.add(rowToDelete.getData());
+            markedPerson.add(rowToDelete.getPhotoName());
+            Stage stage = new Stage();
+            Parent root = FXMLLoader.load(getClass().getResource("edit.fxml"));
+            stage.setTitle("Edycja");
+            stage.setScene(new Scene(root, 600, 150));
+            stage.show();
+        }
     }
 
     @FXML
     public void deleteButton() throws IOException {
         rowToDelete = myTable.getSelectionModel().getSelectedItem();
-        StringBuilder sb = new StringBuilder();
-        sb.append(rowToDelete.getId()).append(";").append(rowToDelete.getImie()).append(";").append(rowToDelete.getNazwisko()).append(";").append(rowToDelete.getPpesel()).append(";").append(rowToDelete.getData()).append(";").append(rowToDelete.getPhotoName());
-        String delete = sb.toString();
-        observableList.remove(delete);
-        data.remove(delete);
-        if (!rowToDelete.getPhotoName().equals("0.jpg")) {
-            Files.delete(Paths.get(prop.get("absolutePath") + rowToDelete.getPhotoName()));
+        if (rowToDelete != null) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(rowToDelete.getId()).append(";").append(rowToDelete.getImie()).append(";").append(rowToDelete.getNazwisko()).append(";").append(rowToDelete.getPpesel()).append(";").append(rowToDelete.getData()).append(";").append(rowToDelete.getPhotoName());
+            String delete = sb.toString();
+            observableList.remove(delete);
+            data.remove(delete);
+            if (!rowToDelete.getPhotoName().equals("0.jpg")) {
+                Files.delete(Paths.get(prop.get("absolutePath") + rowToDelete.getPhotoName()));
+            }
+            FileReader file = new FileReader("osoby.csv");
+            Scanner scanner = new Scanner(file);
+            while (!scanner.hasNextLine()) {
+                if (scanner.nextLine().contains(delete)) {
+
+                }
+            }
+            updateFile();
+            myTable.getItems().removeAll(myTable.getSelectionModel().getSelectedItem());
         }
-        updateFile();
-        myTable.getItems().removeAll(myTable.getSelectionModel().getSelectedItem());
     }
 
     @Override

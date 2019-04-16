@@ -2,19 +2,21 @@ package sample;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import static sample.Controller.observableList;
@@ -24,6 +26,7 @@ public class AddPerson {
 
     private String data = "";
     private String nameOfPhoto = "";
+    private Image tempImage;
 
     @FXML
     private TextField enterFirstName;
@@ -33,6 +36,10 @@ public class AddPerson {
     private TextField enterPesel;
     @FXML
     private TextArea warning;
+    @FXML
+    private ImageView imageView1;
+    @FXML
+    private Label photoName;
 
     static String bigFirstLetter(String z) {
         String delimeter = "";
@@ -114,6 +121,8 @@ public class AddPerson {
         enterFirstName.clear();
         enterSurname.clear();
         enterPesel.clear();
+        imageView1.setImage(null);
+        photoName.setText(null);
     }
 
     public void birthsdayDate(String pesel) {
@@ -160,6 +169,10 @@ public class AddPerson {
             } else {
                 nameOfPhoto = "0.jpg";
             }
+            FileInputStream fileInputStream = new FileInputStream(file);
+            Image image = new Image(new FileInputStream(file));
+            imageView1.setImage(image);
+            photoName.setText(nameOfPhoto);
             source = Paths.get(file.getPath());
             target = Paths.get(prop.getProperty("absolutePath") + nameOfPhoto);
             Files.copy(source, target, REPLACE_EXISTING);
@@ -175,11 +188,11 @@ public class AddPerson {
         String string = "";
         List<Integer> integerList = new ArrayList<>();
         while (scanner.hasNextLine()) {
-            String wers = scanner.nextLine();
-            for (int i = 0; i < wers.length(); i++) {
-                if (Character.isDigit(wers.charAt(i))) {
-                    string += wers.charAt(i);
-                    if (wers.charAt(i + 1) == ';') {
+            String line = scanner.nextLine();
+            for (int i = 0; i < line.length(); i++) {
+                if (Character.isDigit(line.charAt(i))) {
+                    string += line.charAt(i);
+                    if (line.charAt(i + 1) == ';') {
                         break;
                     }
                 }

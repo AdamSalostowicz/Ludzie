@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="480.0" minWidth="10.0" percentWidth="80" prefWidth="421.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="294.0" minWidth="10.0" percentWidth="20" prefWidth="179.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <children>
+        <TableView onKeyPressed="#setImage" onMouseClicked="#setImage" fx:id="myTable" prefHeight="400.0" prefWidth="458.0" GridPane.rowSpan="3">
+            <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+            <columns>
+                <TableColumn fx:id="id" visible="false"/>
+                <TableColumn fx:id="firstName" minWidth="25.0" prefWidth="141.0" text="Imię" />
+                <TableColumn fx:id="lastName" prefWidth="259.0" text="Nazwisko" />
+                <TableColumn fx:id="pesel" prefWidth="110.0" text="Pesel" />
+                <TableColumn fx:id="pesel1" prefWidth="129.0" text="Data urodzenia" />
+                <TableColumn fx:id="photo" visible="false"/>
+            </columns>
+        </TableView>
+        <Button prefWidth="120" fx:id="addPerson" mnemonicParsing="false" onAction="#addPerson" text="Dodaj Osobę" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+        <Button prefWidth="120" mnemonicParsing="false" onAction="#deleteButton" text="Usuń" GridPane.columnIndex="1"
+                GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM"/>
+        <Button prefWidth="120" fx:id="edit" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#edit" text="Edycja" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+        <ImageView onMouseEntered="#onZoom" onMouseExited="#stopZoom" fx:id="imageView" fitHeight="150.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+        </ImageView>
+    </children>
+</GridPane>

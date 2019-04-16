@@ -4,8 +4,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -13,6 +19,7 @@ import java.util.ResourceBundle;
 import static sample.AddPerson.bigFirstLetter;
 import static sample.AddPerson.isPeselCorrect;
 import static sample.Controller.*;
+import static sample.Main.prop;
 
 public class Edit implements Initializable {
 
@@ -26,6 +33,12 @@ public class Edit implements Initializable {
     private TextField textField3;
 
     @FXML
+    private TextField textField4;
+
+    @FXML
+    private ImageView imageView3;
+
+    @FXML
     private Button button;
 
     @Override
@@ -33,6 +46,16 @@ public class Edit implements Initializable {
         textField1.setText(markedPerson.get(1));
         textField2.setText(markedPerson.get(2));
         textField3.setText(markedPerson.get(3));
+        textField4.setText(markedPerson.get(5));
+        try {
+            File file = new File(prop.getProperty("absolutePath") + textField4.getText());
+            FileInputStream fileInputStream = new FileInputStream(file);
+            Image image = new Image(fileInputStream);
+            imageView3.setImage(image);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @FXML
@@ -71,6 +94,15 @@ public class Edit implements Initializable {
         updateFile();
         Stage stage = (Stage) button.getScene().getWindow();
         stage.close();
+    }
+    @FXML
+    private void takeNewImage(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Zmień plik z grafiką");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.jpeg")
+        );
+        File file = fileChooser.showOpenDialog(new Stage());
     }
 }
 
