@@ -9,17 +9,15 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.*;
 import java.util.ResourceBundle;
-
 import static sample.AddPerson.bigFirstLetter;
 import static sample.AddPerson.isPeselCorrect;
 import static sample.Controller.*;
 import static sample.Main.prop;
+import static sample.AddPerson.*;
 
 public class Edit implements Initializable {
 
@@ -40,6 +38,8 @@ public class Edit implements Initializable {
 
     @FXML
     private Button button;
+
+    private File file;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -64,6 +64,13 @@ public class Edit implements Initializable {
         String firstName = textField1.getText();
         String lastName = textField2.getText();
         String pesel = textField3.getText();
+        Path target = Paths.get(prop.getProperty("absolutePath") + nameOfPhoto);
+        InputStream source = new FileInputStream(file);
+        try {
+            Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+        }catch(DirectoryNotEmptyException e) {
+            System.out.println("ALe fejl!");
+        }
         firstName = bigFirstLetter(firstName);
         lastName = bigFirstLetter(lastName);
 
@@ -96,13 +103,17 @@ public class Edit implements Initializable {
         stage.close();
     }
     @FXML
-    private void takeNewImage(){
+    private String takeNewImage() throws IOException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Zmień plik z grafiką");
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif", "*.jpeg")
         );
-        File file = fileChooser.showOpenDialog(new Stage());
+        file = fileChooser.showOpenDialog(new Stage());
+        FileInputStream fileInputStream = new FileInputStream(file);
+        Image image = new Image(fileInputStream);
+        imageView3.setImage(image);
+        return nameOfPhoto;
     }
 }
 

@@ -16,6 +16,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -25,7 +26,7 @@ import static sample.Main.prop;
 public class AddPerson {
 
     private String data = "";
-    private String nameOfPhoto = "";
+    static String nameOfPhoto = "";
     private Image tempImage;
 
     @FXML
@@ -175,14 +176,14 @@ public class AddPerson {
             photoName.setText(nameOfPhoto);
             source = Paths.get(file.getPath());
             target = Paths.get(prop.getProperty("absolutePath") + nameOfPhoto);
-            Files.copy(source, target, REPLACE_EXISTING);
+            Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
             return nameOfPhoto;
         } catch (NullPointerException exc) {
             return null;
         }
     }
 
-    private String getId() throws FileNotFoundException {
+    static String getId() throws FileNotFoundException {
         FileReader fileReader = new FileReader("osoby.csv");
         Scanner scanner = new Scanner(fileReader);
         String string = "";
